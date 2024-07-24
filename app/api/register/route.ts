@@ -1,16 +1,17 @@
 import { hash } from "bcryptjs";
 import { NextResponse } from "next/server";
-import prisma from "@/prisma/prisma";
+import { PrismaClient } from "@prisma/client"
+
 import { createUserSchema } from "@/lib/user-schema";
 import { ZodError } from "zod";
-
+const prisma = new PrismaClient()
 export async function POST(req: Request) {
   try {
     const { name, email, password } = createUserSchema.parse(await req.json());
 
     const hashed_password = await hash(password, 12);
 
-    const user = await prisma.user.create({
+    const user = await (await prisma).user.create({
       data: {
         name,
         email: email.toLowerCase(),
