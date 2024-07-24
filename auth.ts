@@ -1,5 +1,5 @@
 import NextAuth from 'next-auth';
-// import type { Adapter } from "next-auth/adapters";
+import type { Adapter } from "next-auth/adapters";
 import { PrismaAdapter } from '@auth/prisma-adapter';
 // import prisma from './prisma/prisma';
 import { PrismaClient } from "@prisma/client"
@@ -13,7 +13,7 @@ import bcrypt from 'bcryptjs';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: 'jwt' },
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma) as Adapter,
   pages: {
     signIn: '/login',
   },
